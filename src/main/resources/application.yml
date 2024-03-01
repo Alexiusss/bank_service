@@ -4,3 +4,14 @@ server:
 spring:
   application:
     name: bank-service
+  data:
+    rest:
+      base-path: /api
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
