@@ -1,6 +1,5 @@
 package com.example.bank_service.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,5 +31,10 @@ public class BankAccount {
 
     public BankAccount(double startDeposit) {
         this.startDeposit = startDeposit;
+    }
+
+    public BankAccount(double startDeposit, double currentBalance) {
+        this.startDeposit = startDeposit;
+        this.currentBalance = currentBalance;
     }
 }

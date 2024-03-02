@@ -12,6 +12,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  jackson:
-    serialization:
-      fail-on-empty-beans: false
+
+
+interest.rate: 1.05
+max.rate: 3.07
