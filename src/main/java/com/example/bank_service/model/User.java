@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"password", "bankAccount"})
+@ToString(exclude = {"password", "bankAccount", "phoneNumbers", "emails"})
 @Table(name = "users")
 public class User {
 
@@ -47,20 +47,20 @@ public class User {
     private String fullName;
 
     @Column(name = "phone_number")
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "phone_numbers", joinColumns = {@JoinColumn(name = "user_id")})
     private Set<String> phoneNumbers;
 
     @Column(name = "email")
-    @ElementCollection(fetch = FetchType.LAZY)
+    @ElementCollection
     @CollectionTable(name = "emails", joinColumns = {@JoinColumn(name = "user_id")})
     private Set<String> emails;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @PrimaryKeyJoinColumn
     private BankAccount bankAccount;
 
