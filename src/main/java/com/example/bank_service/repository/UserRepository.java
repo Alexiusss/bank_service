@@ -14,6 +14,13 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
+
+    @Query("""
+            SELECT u FROM User u 
+            """)
+    @EntityGraph(attributePaths = {"bankAccount", "phoneNumbers", "emails"})
+    Page<User> findAll(Pageable pageable);
+
     @Query("""
             SELECT u FROM User u
             WHERE u.birthDate > :birth_date             
