@@ -22,13 +22,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     Page<User> findAllWithAccountsByBirthDate(Pageable pageable, @Param("birth_date") LocalDate birthDate);
 
     @Query(value = """
-            SELECT * FROM users
-            LEFT JOIN accounts ON users.id = accounts.user_id
-            LEFT JOIN phone_numbers pn ON users.id = pn.user_id
-            LEFT JOIN emails ON users.id = emails.user_id
-            WHERE pn.phone_number = :phone_number
-             """,
-            nativeQuery = true)
+            SELECT u FROM User u
+            WHERE :phone_number MEMBER OF u.phoneNumbers 
+                        """)
+    @EntityGraph(attributePaths = {"bankAccount", "phoneNumbers", "emails"})
     Optional<User> findUserByPhoneNumber(@Param("phone_number") String phoneNumber);
 
     @Query("""
@@ -40,12 +37,10 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 
     @Query(value = """
-            SELECT * FROM users
-            LEFT JOIN accounts ON users.id = accounts.user_id
-            LEFT JOIN emails ue ON users.id = ue.user_id
-            WHERE ue.email =:email
-             """,
-            nativeQuery = true)
+            SELECT u FROM User u
+            WHERE :email MEMBER OF u.emails 
+                        """)
+    @EntityGraph(attributePaths = {"bankAccount", "phoneNumbers", "emails"})
     Optional<User> findUserByEmail(@Param("email") String email);
 
     Optional<User> findByUsername(String username);
