@@ -43,14 +43,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        http.securityMatcher("/api/**")
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/v1/register").permitAll()
+                        .requestMatchers("/", "/api/v1/register", "/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                 )
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
