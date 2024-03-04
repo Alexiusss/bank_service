@@ -18,6 +18,10 @@ public class BankAccount {
     @Column(name = "user_id")
     private String userId;
 
+    @Version
+    @Column(name = "version")
+    private int version;
+
     @Column(name = "start_deposit")
     private double startDeposit;
 

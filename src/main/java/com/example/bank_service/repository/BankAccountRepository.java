@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, String> {
     @Modifying
-    @Query(value = """
+    @Query("""
                     UPDATE BankAccount ba
             SET ba.currentBalance = CASE
                 WHEN ba.currentBalance = 0 AND ba.currentBalance >= ba.startDeposit * :maxRate THEN ba.currentBalance
@@ -18,4 +18,16 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, String
             END
             """)
     void chargeInterests(@Param("interestRate") double interestRate, @Param("maxRate") double maxRate);
+
+
+    @Modifying
+    @Query("""
+                    UPDATE BankAccount ba
+            SET ba.currentBalance = CASE
+                WHEN ba.userId = :fromUserId THEN ba.currentBalance - :amount
+                WHEN ba.userId =:toUserId THEN ba.currentBalance + :amount
+                ELSE ba.currentBalance
+            END
+            """)
+    int transfer(@Param("fromUserId")String fromUserId, @Param("toUserId")String toUserId, @Param("amount")double amount);
 }

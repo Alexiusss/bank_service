@@ -1,7 +1,9 @@
 package com.example.bank_service.web;
 
+import com.example.bank_service.service.BankAccountService;
 import com.example.bank_service.service.UserService;
 import com.example.bank_service.to.ContactTo;
+import com.example.bank_service.to.TransferTo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -19,6 +21,7 @@ public class ProfileController {
     static final String REST_URL = "/api/v1/profile";
 
     private final UserService userService;
+    private final BankAccountService bankAccountService;
 
     @Operation(summary = "Add email and/or phone number for the authenticated user")
     @SecurityRequirement(name = "basicAuth")
@@ -52,5 +55,12 @@ public class ProfileController {
             @RequestParam(value = "email", required = false) String email
     ) {
         userService.deleteContacts(phoneNumber, email, authUser);
+    }
+
+    @Operation(summary = "Transfer money from an authenticated user to another user using their id")
+    @SecurityRequirement(name = "basicAuth")
+    @PostMapping(value = "/transfer")
+    public void transferMoney(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody TransferTo transferTo) {
+        bankAccountService.transferMoney(authUser.id(), transferTo.toUserId(), transferTo.amount());
     }
 }

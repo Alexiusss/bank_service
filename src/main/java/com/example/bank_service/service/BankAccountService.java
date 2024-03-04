@@ -24,4 +24,10 @@ public class BankAccountService {
     public void chargeInterests() {
         repository.chargeInterests(interestRate, maxRate);
     }
+
+    @Transactional
+    public int transferMoney(String fromUserId, String toUserId, double amount) {
+        return repository.transfer(fromUserId, toUserId, amount);
+    }
+
 }
