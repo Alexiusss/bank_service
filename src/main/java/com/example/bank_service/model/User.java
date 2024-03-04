@@ -1,8 +1,11 @@
 package com.example.bank_service.model;
 
+import com.example.bank_service.model.id.generator.BaseIdentifierGenerator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -22,6 +25,10 @@ public class User {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(generator = "custom-generator",
+            strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "custom-generator",
+            type = BaseIdentifierGenerator.class)
     private String id;
 
     @Version
