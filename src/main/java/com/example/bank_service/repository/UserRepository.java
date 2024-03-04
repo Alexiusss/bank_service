@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static com.example.bank_service.config.SecurityConfig.PASSWORD_ENCODER;
+
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
@@ -37,7 +39,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query("""
             SELECT u FROM User u
-            WHERE u.fullName LIKE concat('%', :full_name,'%')          
+            WHERE u.fullName LIKE concat(:full_name,'%')
             """)
     @EntityGraph(attributePaths = {"bankAccount", "phoneNumbers", "emails"})
     Page<User> findAllWithContactsAndAccountsByFullName(Pageable pageable, @Param("full_name") String fullName);
@@ -51,4 +53,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findUserByEmail(@Param("email") String email);
 
     Optional<User> findByUsername(String username);
+
+    default User prepareAndSave(User user) {
+        user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
+        return save(user);
+    }
 }
