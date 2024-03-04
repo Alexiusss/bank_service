@@ -5,6 +5,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
+import static com.example.bank_service.UserUtil.PHONE_NUMBER_PATTERN_MESSAGE;
+import static com.example.bank_service.UserUtil.PHONE_NUMBER_REGEX;
+
 public record UserTo(
         @NotBlank
         @Size(min = 5, max = 128)
@@ -18,8 +21,7 @@ public record UserTo(
         @Positive
         double startDeposit,
         @Size(min = 10, max = 20)
-        @Pattern(regexp = "([+]*[0-9]{1,4}\\s?[(]*\\d[0-9]{2,4}[)]*\\s?\\d{3}[-]*\\d{2}[-]*\\d{2})",
-                message = "Please fill the phone number in format +1 (234) 567-89-10")
+        @Pattern(regexp = PHONE_NUMBER_REGEX, message = PHONE_NUMBER_PATTERN_MESSAGE)
         String phoneNumber,
         @Email
         @NotBlank

@@ -54,6 +54,13 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     Optional<User> findByUsername(String username);
 
+    @Query("""
+            SELECT u FROM User u
+            WHERE u.id = ?1
+            """)
+    @EntityGraph(attributePaths = {"phoneNumbers", "emails"})
+    Optional<User> findByIdWithContacts(String id);
+
     default User prepareAndSave(User user) {
         user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
         return save(user);

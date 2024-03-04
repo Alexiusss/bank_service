@@ -2,6 +2,8 @@ package com.example.bank_service.web;
 
 import com.example.bank_service.model.User;
 import com.example.bank_service.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +23,9 @@ public class UserController {
 
     UserService userService;
 
+
+    @Operation(summary = "Return a list of users and filtered according the query parameters", description = "Authentication is required to access this API")
+    @SecurityRequirement(name = "basicAuth")
     @GetMapping
     public ResponseEntity<Page<User>> getAllFiltered(
             @RequestParam(value = "birthDate", required = false) String birthDate,
@@ -31,6 +36,8 @@ public class UserController {
         return ResponseEntity.ok(userService.getFiltered(birthDate, fullName, PageRequest.of(page, size)));
     }
 
+    @Operation(summary = "Get a user by its email or phone number", description = "Authentication is required to access this API")
+    @SecurityRequirement(name = "basicAuth")
     @GetMapping("/filter")
     public ResponseEntity<User> getByFilter(
             @RequestParam(value = "email", required = false) String email,
