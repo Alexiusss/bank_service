@@ -13,7 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
-import static com.example.bank_service.UserUtil.createNewFromTo;
+import static com.example.bank_service.util.UserUtil.createNewFromTo;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController

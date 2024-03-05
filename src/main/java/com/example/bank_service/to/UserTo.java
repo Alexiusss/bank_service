@@ -5,8 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-import static com.example.bank_service.UserUtil.PHONE_NUMBER_PATTERN_MESSAGE;
-import static com.example.bank_service.UserUtil.PHONE_NUMBER_REGEX;
+import static com.example.bank_service.util.UserUtil.PHONE_NUMBER_PATTERN_MESSAGE;
+import static com.example.bank_service.util.UserUtil.PHONE_NUMBER_REGEX;
 
 public record UserTo(
         @NotBlank

@@ -23,7 +23,7 @@ public class ProfileController {
     private final UserService userService;
     private final BankAccountService bankAccountService;
 
-    @Operation(summary = "Add email and/or phone number for the authenticated user")
+    @Operation(summary = "Add email and/or phone number for the authenticated user", description = "Authentication is required to access this API")
     @SecurityRequirement(name = "basicAuth")
     @PostMapping(value = "/contacts")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -34,7 +34,7 @@ public class ProfileController {
         userService.addContacts(phoneNumber, email, authUser);
     }
 
-    @Operation(summary = "Edit email and/or phone number for the authenticated user")
+    @Operation(summary = "Edit email and/or phone number for the authenticated user", description = "Authentication is required to access this API")
     @SecurityRequirement(name = "basicAuth")
     @PatchMapping(value = "/contacts")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -45,7 +45,7 @@ public class ProfileController {
         userService.editContacts(contactTo, authUser);
     }
 
-    @Operation(summary = "Delete email and/or phone number for the authenticated user")
+    @Operation(summary = "Delete email and/or phone number for the authenticated user", description = "Authentication is required to access this API")
     @SecurityRequirement(name = "basicAuth")
     @DeleteMapping(value = "/contacts")
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -57,7 +57,7 @@ public class ProfileController {
         userService.deleteContacts(phoneNumber, email, authUser);
     }
 
-    @Operation(summary = "Transfer money from an authenticated user to another user using their id")
+    @Operation(summary = "Transfer money from an authenticated user to another user using their id", description = "Authentication is required to access this API")
     @SecurityRequirement(name = "basicAuth")
     @PostMapping(value = "/transfer")
     public void transferMoney(@AuthenticationPrincipal AuthUser authUser, @Valid @RequestBody TransferTo transferTo) {

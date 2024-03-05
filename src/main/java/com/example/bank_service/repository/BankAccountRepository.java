@@ -24,7 +24,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, String
     @Query("""
                     UPDATE BankAccount ba
             SET ba.currentBalance = CASE
-                WHEN ba.userId = :fromUserId THEN ba.currentBalance - :amount
+                WHEN ba.userId = :fromUserId AND ba.currentBalance >= :amount THEN ba.currentBalance - :amount
                 WHEN ba.userId =:toUserId THEN ba.currentBalance + :amount
                 ELSE ba.currentBalance
             END

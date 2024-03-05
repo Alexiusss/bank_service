@@ -1,4 +1,4 @@
-package com.example.bank_service;
+package com.example.bank_service.util;
 
 import com.example.bank_service.model.BankAccount;
 import com.example.bank_service.model.User;
