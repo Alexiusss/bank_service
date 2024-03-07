@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional(readOnly = true)
 public interface BankAccountRepository extends JpaRepository<BankAccount, String> {
     @Modifying
     @Query("""
@@ -19,15 +21,21 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, String
             """)
     void chargeInterests(@Param("interestRate") double interestRate, @Param("maxRate") double maxRate);
 
+    @Query(value = """
+        SELECT current_balance
+        FROM accounts
+        WHERE user_id = :user_id
+        """,
+            nativeQuery = true)
+    long getBalance(@Param("user_id") String userId);
 
+    @Query(value = """
+        UPDATE accounts
+        SET current_balance = current_balance + :cents
+        WHERE user_id = :user_id
+        """,
+            nativeQuery = true)
     @Modifying
-    @Query("""
-                    UPDATE BankAccount ba
-            SET ba.currentBalance = CASE
-                WHEN ba.userId = :fromUserId AND ba.currentBalance >= :amount THEN ba.currentBalance - :amount
-                WHEN ba.userId =:toUserId THEN ba.currentBalance + :amount
-                ELSE ba.currentBalance
-            END
-            """)
-    int transfer(@Param("fromUserId")String fromUserId, @Param("toUserId")String toUserId, @Param("amount")double amount);
+    @Transactional
+    int addBalance(@Param("user_id") String userId, @Param("cents") double cents);
 }
